@@ -6,8 +6,12 @@ from pulp import *
 # Generate random coordinates for visiting points
 visit_points = np.array([[random.randrange(0,10), random.randrange(0,10)] for ii in range(8)])
 
+
 # Plot the visit points on a graph
 plt.plot(visit_points[:,0], visit_points[:,1],'g.')
+
+# optional_points = np.array([[random.randrange(0,10), random.randrange(0,10)] for ii in range(8)])
+# plt.plot(optional_points[:,0], optional_points[:,1],'b.')
 
 # Calculate the distance between each pair of visit points
 from math import sqrt
