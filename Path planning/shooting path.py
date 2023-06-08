@@ -73,10 +73,12 @@ def path_cost(z):
     goal_miss_distance = norm(p[0:3,-1]-xG)
     total_time_flown = sum(z[range(0,len(z),2)])
     curvature_excess = [max(abs(c)-curvature_limit,0.) for c in z[range(1,len(z),2)]]
+    print("curvature: ", curvature_excess)
     J = total_time_flown + 1000.*goal_miss_distance + 10000.*sum(curvature_excess)
     return(J)
 
-print(path_cost(z))
+
+print("cost: ", path_cost(z))
 
 from scipy.optimize import minimize
 
