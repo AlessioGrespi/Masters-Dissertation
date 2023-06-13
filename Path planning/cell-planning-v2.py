@@ -96,7 +96,7 @@ quadtree(bl[0],bl[1],tr[0],tr[1],obstacles)
 for ob in obstacles:
     plot_poly(ob,'r-')
 
-plt.show()
+#plt.show()
 
 print(cells)
 
@@ -227,8 +227,8 @@ for ii in range(num_cells):
 
 from scipy.sparse.csgraph import shortest_path
 distance,predecessors = shortest_path(d_aug, return_predecessors=True)
-print(distance)
-print(predecessors)
+print("distance",distance)
+print("predecessors",predecessors)
 
 curr_node = start_idx
 for kk in range(len(nx_points_aug)):
@@ -240,6 +240,26 @@ for kk in range(len(nx_points_aug)):
         
 for ob in obstacles:
     plot_poly(ob,'r-')
+
+
+##########
+
+curr_node = start_idx
+path = [start_point]
+while curr_node != goal_idx:
+    next_node = predecessors[goal_idx, curr_node]
+    plt.plot([nx_points_aug[curr_node][0], nx_points_aug[next_node][0]],
+             [nx_points_aug[curr_node][1], nx_points_aug[next_node][1]], 'm-')
+    curr_node = next_node
+    path.append(nx_points_aug[curr_node])
     
+# Print the path
+print("Path:")
+for point in path:
+    print(point)
+    
+############
+
+
 plt.plot(start_point[0],start_point[1],'go',goal_point[0],goal_point[1],'gx')
 plt.show()

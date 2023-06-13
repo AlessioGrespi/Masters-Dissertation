@@ -29,6 +29,15 @@ def f(x,u):
 
 z = np.array([1.5,1.,3.,0.,1.5,-2.,3,0.5]) ##### --> this is where you input the path generated (e.g. A* Dijkstra etc.) from the path planning elsewhere. 
 
+
+
+
+
+
+
+
+
+
 from scipy.integrate import solve_ivp
 from scipy.interpolate import interp1d
 
