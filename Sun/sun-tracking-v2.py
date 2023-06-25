@@ -3,14 +3,26 @@ https://www.pveducation.org/pvcdrom/properties-of-sunlight/suns-position-to-high
 http://www.psa.es/sdg/archive/SunPos.cpp
 http://www.psa.es/sdg/archive/SunPos.h 
 """
-
+import matplotlib.pyplot as plt
 import math
+import time
 
 pi = math.pi
 twopi = 2 * pi
 rad = pi / 180
 dEarthMeanRadius = 6371.01
 dAstronomicalUnit = 149597890
+
+latitude = 40.7128
+longitude = -74.0060
+
+year = 2023
+month = 6
+day = 20
+hour = 6
+minute = 0
+second = 0
+
 
 class cTime:
     def __init__(self, year, month, day, hours, minutes, seconds):
@@ -75,3 +87,47 @@ def sunpos(udtTime, udtLocation, udtSunCoordinates):
     # Apply the parallax correction
     dParallax = (dEarthMeanRadius / dAstronomicalUnit) * math.sin(udtSunCoordinates.dZenithAngle)
     udtSunCoordinates.dZenithAngle = (udtSunCoordinates.dZenithAngle + dParallax) / rad
+
+    # Print the outputs
+    print("Coordinates: %.5f : %.5f" %(latitude, longitude))
+    print("Time: %i:%.2i:%.2i:%.2i:%.2i:%.2i" %(year, month, day, hour, minute, second))
+    print("Zenith Angle: ", udtSunCoordinates.dZenithAngle)
+    print("Azimuth: ", udtSunCoordinates.dAzimuth)
+
+    return udtSunCoordinates
+
+# Example usage
+time = cTime(year, month, day, hour, minute, second)  # Starting time
+location = cLocation(longitude, latitude)  # Example location (New York City)
+
+# Calculate zenith and azimuth for each hour of the day
+hours = []
+zenith_angles = []
+azimuths = []
+
+sun_coords = cSunCoordinates()
+sunpos(time, location, sun_coords)
+
+"""
+
+
+for hour in range(24):
+    time.dHours = hour
+    sun_coords = cSunCoordinates()
+    sunpos(time, location, sun_coords)
+    hours.append(hour)
+    zenith_angles.append(sun_coords.dZenithAngle)
+    azimuths.append(sun_coords.dAzimuth)
+
+# Plot the graph
+plt.figure(figsize=(12, 6))
+plt.plot(hours, zenith_angles, label="Zenith Angle")
+plt.plot(hours, azimuths, label="Azimuth")
+plt.xlabel("Hour of the day")
+plt.ylabel("Angle (degrees)")
+plt.title("Sun Position Throughout the Day")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+"""

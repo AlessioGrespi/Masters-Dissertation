@@ -1,7 +1,7 @@
-pitch = 30 #deg
-roll = 10#deg
-yaw = 10 #deg
-heading = 10 #deg
+pitch = 0 #deg
+roll = 0#deg
+yaw = 0 #deg
+heading = 0 #deg
 altitude = 1000
 
 azimuth = 30 #deg
