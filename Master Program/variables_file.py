@@ -10,18 +10,18 @@ glide_ratio = 45  # horizontal distance per metre of altitude
 cruise_speed = 15  # m/s
 
 ### Power Systems
-batt_mAH = 30000
-batt_Cells = 6
+batt_mAH = 50000
+batt_Cells = 8
 cell_Voltage = 4.2
 batt_Voltage = batt_Cells * cell_Voltage
 batt_WattHours = batt_mAH * batt_Voltage / 1000
 motor_efficiency_factor = 80
 A_idle = 0.5  # drain per second
 A_motor = 5  # drain per second
-motor_power = 250 # W Dummy value atm
+motor_power = 150 # W Dummy value atm
 
 ### Solar Systems
-maximum_power = 250  # Example maximum power rating of the solar panel in watts
+maximum_power = 350  # Example maximum power rating of the solar panel in watts
 panel_efficiency = 0.85  # Example efficiency of the solar panel
 panel_type = "planar"
 panel_number = []
@@ -59,7 +59,7 @@ roll = 0
 latitude = 51.509865
 longitude = -0.118092
 
-mAH_remaining = 12000
+#mAH_remaining = 12000
 
 current_altitude = 1000  # metres
 
@@ -74,3 +74,6 @@ elevation_angles = []
 azimuths = []
 incidence_angles = []
 power_day = []
+Wh_remaining = []
+power_out = []
+power_in = []

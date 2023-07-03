@@ -5,17 +5,19 @@ TODO:
 - Add code header
 """
 import matplotlib.pyplot as plt
-import sun_calc
-import incidence
-import solar_power
-import power_maths
-import math
+
+
 from variables_file import *
 from datetime import datetime, timedelta
+import power_generation_maths
+import power_consumption_maths
+import graphs
 
-power_maths.power_on_wing(latitude, longitude, year, month, day, hour, minute, pitch, yaw, roll)
-power_maths.power_through_day(latitude, longitude, year, month, day, pitch, yaw, roll)
+graphs.power_start_depleted(2)
 
+
+
+""" 
 plt.figure(figsize=(12, 6))
 plt.plot(hours, zenith_angles, label="Zenith Angle")
 #plt.plot(hours, elevation_angles, label="Elevation Angle")
@@ -30,3 +32,4 @@ plt.xlim(0, 24)  # Set x-axis limits
 plt.xticks(range(0, 25, 1))  # Set x-axis tick marks every 4 units
 plt.grid(True)
 plt.show() 
+ """

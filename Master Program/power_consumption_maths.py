@@ -29,6 +29,7 @@ def motor_LUT():
     forces_of_flight()
 
 def consumption_rate(motor_power): # P = IV
-    power_consumption = ((motor_power / batt_Voltage)) + A_idle
+    power_consumption = motor_power + (A_idle * 5)
     return power_consumption
 
+print(consumption_rate(motor_power))

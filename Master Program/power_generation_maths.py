@@ -14,9 +14,9 @@ class sun_solar_values:
         self.incidence_angle = 0.0
         self.output_power = 0.0
 
-def power_on_wing(latitude, longitude, year, month, day, hour, minute, pitch, yaw, roll):
+def power_on_wing(latitude, longitude, year, month, day, hour, minute, second, pitch, yaw, roll):
     output_power = 0
-    sun_coords = sun_calc.calculate_sun_position(latitude, longitude, year, month, day, hour, minute, 0)
+    sun_coords = sun_calc.calculate_sun_position(latitude, longitude, year, month, day, hour, minute, second)
 
     azimuth = sun_coords.dAzimuth
     zenith = sun_coords.dZenithAngle
@@ -37,7 +37,7 @@ def power_on_wing(latitude, longitude, year, month, day, hour, minute, pitch, ya
         incidence_angle = incidence.calculate_incidence_angle(sun_coords.dAzimuth, elevation, pitch, yaw, roll)
         output_power = solar_power.calculate_solar_power(incidence_angle, maximum_power, panel_efficiency)
 
-    print("Azimuth: %f | Zenith: %f | Incidence: %f | Output Power: %f" %(azimuth, zenith, incidence_angle, output_power))
+    #print("Azimuth: %f | Zenith: %f | Incidence: %f | Output Power: %f" %(azimuth, zenith, incidence_angle, output_power))
     
     sun_values = sun_solar_values()
 
@@ -50,7 +50,7 @@ def power_on_wing(latitude, longitude, year, month, day, hour, minute, pitch, ya
 def power_through_day(latitude, longitude, year, month, day, pitch, yaw, roll):
     for hour in range(24):
         for minute in range(60):
-            sun_values = power_on_wing(latitude, longitude, year, month, day, hour, minute, pitch, yaw, roll)
+            sun_values = power_on_wing(latitude, longitude, year, month, day, hour, minute, 0, pitch, yaw, roll)
 
             power_day.append(sun_values.output_power)
             hours.append(hour + minute / 60)  # Calculate hour with minute fraction
