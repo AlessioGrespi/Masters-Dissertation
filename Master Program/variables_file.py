@@ -1,7 +1,8 @@
 ### Aircraft Defined Properties
 dry_weight = 3
 wet_weight = 2
-weight = dry_weight + wet_weight
+payload_weight = 0.8
+weight = dry_weight + wet_weight + payload_weight
 wing_span = 2 #metres
 wing_chord = 0.3 #metres
 wing_area = wing_span * wing_chord #metres squared
@@ -27,11 +28,18 @@ panel_type = "planar"
 panel_number = []
 panel_segments = 0
 
+### Panel Variables Assuming Sunpower C60 http://eshop.terms.eu/_data/s_3386/files/1379942540-sunpower_c60_bin_ghi.pdf 
+panel_efficiency = 1 # efficiency can be ignored as it is already factored in
+wppanel = 3.38 # W
+# each panel is 125 mm x 125mm
+panel_x = 2
+panel_y = 8
+maximum_power = wppanel * panel_x * panel_y
 
 ### Mathematical Constants
 atmo_density = 1.225
 drag_co = 0.1
-lift_co = 0.9
+lift_co = 0.9 #(0.3-0.5)
 
 ### Mission parameters
 safety_factor = 20  # percent

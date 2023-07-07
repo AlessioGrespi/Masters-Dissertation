@@ -13,6 +13,7 @@ import power_generation_maths
 import power_consumption_maths
 import graphs
 
+
 graphs.power_start_depleted(2)
 
 

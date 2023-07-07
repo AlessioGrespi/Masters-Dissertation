@@ -5,6 +5,7 @@ import time
 
 
 def basic_range():
+    power_consumption = power_consumption_maths.consumption_rate(motor_power)
 
     n = (batt_WattHours * 60) / power_consumption
 

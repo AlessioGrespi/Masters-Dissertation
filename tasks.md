@@ -25,3 +25,25 @@ make the output algorithm. reference any source numbers
 
 
 refertence the shit out of it.
+
+---------------------------
+
+ratio between payload, airframe, fuel weight etc
+Use this information to then work backwards
+look at lift to drag ratios 30-40:1
+
+
+sensitivity plot: 
+- payload (ratio) -> weight(mass), aircraft efficiency payload vs overall mass(airframe + fuel)
+- lift:drag -> cross sectional area, lifting area
+- Solar energy per unit mass aircraft
+- airspeed vs drag DONE!
+
+This week:
+
+- Find a height map and see i can run filter thru it, check bristol and gloustershire gliding club maybe
+- Do the heron stuff from tom email
+- start playing with sensitivity plots
+- find references for values i.e. solar cells etc. 
+- look at glider and maybe other airframes?
+- sensitivty plot of heading vs sun for z wing
