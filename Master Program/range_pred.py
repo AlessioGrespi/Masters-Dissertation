@@ -1,11 +1,11 @@
 from variables_file import *
-import power_consumption_maths
-import power_generation_maths
+import power.power_consumption_maths
+import power.power_generation_maths
 import time
 
 
 def basic_range():
-    power_consumption = power_consumption_maths.consumption_rate(motor_power)
+    power_consumption = power.power_consumption_maths.consumption_rate(motor_power)
 
     n = (batt_WattHours * 60) / power_consumption
 
@@ -20,7 +20,7 @@ def glider_range(current_altitude, landing_altitude):
 
 def range_left(batt_mAH, mAH_remaining, motor_power, cruise_speed):
 
-    power_drain_sec = power_consumption_maths.consumption_rate(motor_power)
+    power_drain_sec = power.power_consumption_maths.consumption_rate(motor_power)
     power_gen_sec = 0  # config later
 
     n = (mAH_remaining + power_gen_sec) / power_drain_sec  # seconds

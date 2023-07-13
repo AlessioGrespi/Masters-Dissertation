@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from variables_file import *
-import power_generation_maths
-import power_consumption_maths
+import power.power_generation_maths as gen
+import power.power_consumption_maths as con
 
 def power_0_24():
     batt_WattHours_Remaining = batt_WattHours
@@ -10,8 +10,8 @@ def power_0_24():
     for hour in range(24):
         for minute in range(60):
             for second in range(60):
-                sun_values = power_generation_maths.power_on_wing(latitude, longitude, year, month, day, hour, minute, second, pitch, yaw, roll)
-                power_consumption = power_consumption_maths.consumption_rate(motor_power)
+                sun_values = gen.power_on_wing(latitude, longitude, year, month, day, hour, minute, second, pitch, yaw, roll)
+                power_consumption = con.consumption_rate(motor_power)
                 resultant_power = sun_values.output_power - power_consumption
                 batt_WattSeconds_Remaining = batt_WattSeconds_Remaining + resultant_power 
                 batt_WattHours_Remaining = batt_WattSeconds_Remaining / 3600
@@ -69,8 +69,8 @@ def power_start_end(start_hour, end_hour):
     for hour in range(start_hour, end_hour + 1):  # Loop from the start hour to the end hour (inclusive)
         for minute in range(60):
             for second in range(60):
-                sun_values = power_generation_maths.power_on_wing(latitude, longitude, year, month, day, hour, minute, second, pitch, yaw, roll)
-                power_consumption = power_consumption_maths.consumption_rate(motor_power)
+                sun_values = gen.power_on_wing(latitude, longitude, year, month, day, hour, minute, second, pitch, yaw, roll)
+                power_consumption = con.consumption_rate(motor_power)
                 resultant_power = sun_values.output_power - power_consumption
                 batt_WattSeconds_Remaining = batt_WattSeconds_Remaining + resultant_power 
                 batt_WattHours_Remaining = batt_WattSeconds_Remaining / 3600
@@ -97,8 +97,8 @@ def power_start_depleted(start_hour):
     second = 0
 
     while batt_WattHours_Remaining > 0:
-        sun_values = power_generation_maths.power_on_wing(latitude, longitude, year, month, day, hour, minute, second, pitch, yaw, roll)
-        power_consumption = power_consumption_maths.consumption_rate(motor_power)
+        sun_values = gen.power_on_wing(latitude, longitude, year, month, day, hour, minute, second, pitch, yaw, roll)
+        power_consumption = con.consumption_rate(motor_power)
         resultant_power = sun_values.output_power - power_consumption
         batt_WattSeconds_Remaining = batt_WattSeconds_Remaining + resultant_power
         batt_WattHours_Remaining = batt_WattSeconds_Remaining / 3600

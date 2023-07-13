@@ -3,7 +3,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from variables_file import atmo_density, lift_co, drag_co, cross_section_area, wing_area
 
 
-
 def solar_energy_per_unit_mass():
     w_m_squared = pow(0.125, 2) * 3.5
 
@@ -120,6 +119,6 @@ def airspeed_to_drag_dragco():
 
 airspeed_to_drag_dragco()
 
-#lift_to_drag()
+lift_to_drag()
 
-#solar_energy_per_unit_mass()
+solar_energy_per_unit_mass()
