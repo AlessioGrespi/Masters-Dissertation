@@ -2,10 +2,6 @@ import cv2
 import numpy as np
 import pickle
 
-def dump_quadtree_to_file(quadtree, filename):
-    with open(filename, 'wb') as file:
-        pickle.dump(quadtree, file)
-
 def quadtree_process(image, threshold):
     height, width = image.shape[:2]
     quadtree = QuadTreeNode(0, 0, width, height)
@@ -15,9 +11,9 @@ def quadtree_process(image, threshold):
 def process_quadtree(image, quadtree, threshold):
     x, y, w, h = quadtree.x, quadtree.y, quadtree.width, quadtree.height
     region = image[y:y+h, x:x+w]
-    max_value = np.max(region)
+    min_value = np.min(region)
 
-    if max_value < threshold:
+    if min_value > threshold:
         quadtree.is_obstacle = True
     else:
         if w > 1 and h > 1:
@@ -42,7 +38,7 @@ class QuadTreeNode:
         self.children = []
 
 # Load the grayscale image
-image = cv2.imread('output_image.png', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('split-image.png', cv2.IMREAD_GRAYSCALE)
 
 # Define the threshold value
 threshold = 70
@@ -50,7 +46,6 @@ threshold = 70
 # Perform quadtree process
 quadtree = quadtree_process(image, threshold)
 
-dump_quadtree_to_file(quadtree, 'quadtree.pkl')
 
 # Create a colored version of the image
 image_colored = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)

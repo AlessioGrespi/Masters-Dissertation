@@ -1,15 +1,6 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-
-class QuadTreeNode:
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.is_obstacle = False
-        self.children = []
+import pickle
 
 def quadtree_process(image, threshold):
     height, width = image.shape[:2]
@@ -20,9 +11,9 @@ def quadtree_process(image, threshold):
 def process_quadtree(image, quadtree, threshold):
     x, y, w, h = quadtree.x, quadtree.y, quadtree.width, quadtree.height
     region = image[y:y+h, x:x+w]
-    max_value = np.max(region)
+    min_value = np.min(region)
 
-    if max_value < threshold:
+    if min_value > threshold:
         quadtree.is_obstacle = True
     else:
         if w > 1 and h > 1:
@@ -36,22 +27,18 @@ def process_quadtree(image, quadtree, threshold):
             for child in quadtree.children:
                 process_quadtree(image, child, threshold)
 
-def quadtree_to_map(quadtree):
-    map_width = quadtree.width
-    map_height = quadtree.height
-    map_array = np.zeros((map_height, map_width), dtype=np.uint8)
-    fill_map_array(quadtree, map_array)
-    return map_array
 
-def fill_map_array(node, map_array):
-    if node.is_obstacle:
-        map_array[node.y:node.y + node.height, node.x:node.x + node.width] = 255
-    else:
-        for child in node.children:
-            fill_map_array(child, map_array)
+class QuadTreeNode:
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.is_obstacle = False
+        self.children = []
 
 # Load the grayscale image
-image = cv2.imread('output_image.png', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('split-image.png', cv2.IMREAD_GRAYSCALE)
 
 # Define the threshold value
 threshold = 70
@@ -63,27 +50,29 @@ quadtree = quadtree_process(image, threshold)
 image_colored = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
 # Draw quadtree overlay on the colored image
-def draw_quadtree(node, image):
+def draw_quadtree(node, image, cells):
     if node.is_obstacle:
         cv2.rectangle(image, (node.x, node.y), (node.x + node.width, node.y + node.height), (0, 0, 255), 2)
     else:
         for child in node.children:
-            draw_quadtree(child, image)
+            draw_quadtree(child, image, cells)
+            cells.append((child.x / image.shape[1], child.y / image.shape[0], (child.x + child.width) / image.shape[1], (child.y + child.height) / image.shape[0]))
 
-draw_quadtree(quadtree, image_colored)
+# List to store the cell coordinates
+cells = []
 
-# Convert quadtree to a map
-map_array = quadtree_to_map(quadtree)
+# Draw quadtree and collect cell coordinates
+draw_quadtree(quadtree, image_colored, cells)
 
 # Display the image with the quadtree overlay
 cv2.imshow('Image with Quadtree Overlay', image_colored)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-# Save the map to a text file
-np.savetxt('map.txt', map_array, fmt='%d')
+# Print the cell coordinates
+print(cells)
 
-# Create a plot and display the map
-plt.imshow(map_array, cmap='gray')
-plt.title('Map')
-plt.show()
+# Write the cell coordinates to a text file
+with open('quadtree_cells.txt', 'w') as file:
+    for cell in cells:
+        file.write(f"{cell}\n")

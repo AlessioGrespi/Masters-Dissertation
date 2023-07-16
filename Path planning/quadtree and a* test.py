@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
-import random
-import heapq
+import pickle
 
 class QuadTreeNode:
     def __init__(self, x, y, width, height):
@@ -11,17 +10,6 @@ class QuadTreeNode:
         self.height = height
         self.is_obstacle = False
         self.children = []
-        self.parent = None
-
-    def distance_to(self, other):
-        return np.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)
-
-    def cost_to(self, other):
-        return 1 + self.distance_to(other)
-
-    def total_cost(self, start, end):
-        return self.cost_to(start) + self.distance_to(end)
-
 
 def quadtree_process(image, threshold):
     height, width = image.shape[:2]
@@ -29,13 +17,12 @@ def quadtree_process(image, threshold):
     process_quadtree(image, quadtree, threshold)
     return quadtree
 
-
 def process_quadtree(image, quadtree, threshold):
     x, y, w, h = quadtree.x, quadtree.y, quadtree.width, quadtree.height
-    region = image[y:y + h, x:x + w]
-    max_value = np.max(region)
+    region = image[y:y+h, x:x+w]
+    min_value = np.min(region)
 
-    if max_value < threshold:
+    if min_value > threshold:
         quadtree.is_obstacle = True
     else:
         if w > 1 and h > 1:
@@ -50,44 +37,8 @@ def process_quadtree(image, quadtree, threshold):
                 process_quadtree(image, child, threshold)
 
 
-def find_route(start, end):
-    open_list = []
-    closed_set = set()
-    heapq.heappush(open_list, (0, start))
-
-    while open_list:
-        _, current_node = heapq.heappop(open_list)
-
-        if current_node == end:
-            return construct_path(current_node)
-
-        closed_set.add(current_node)
-
-        for child in current_node.children:
-            if child.is_obstacle or child in closed_set:
-                continue
-
-            new_cost = current_node.cost_to(child)
-            if child not in open_list:
-                heapq.heappush(open_list, (new_cost + child.distance_to(end), child))
-            elif new_cost < current_node.cost_to(child):
-                open_list.remove((current_node.cost_to(child) + child.distance_to(end), child))
-                heapq.heappush(open_list, (new_cost + child.distance_to(end), child))
-            child.parent = current_node
-
-    return None
-
-
-def construct_path(node):
-    path = []
-    while node:
-        path.append((node.x + node.width // 2, node.y + node.height // 2))
-        node = node.parent
-    return path[::-1]
-
-
 # Load the grayscale image
-image = cv2.imread('output_image.png', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('split-image.png', cv2.IMREAD_GRAYSCALE)
 
 # Define the threshold value
 threshold = 70
@@ -95,10 +46,40 @@ threshold = 70
 # Perform quadtree process
 quadtree = quadtree_process(image, threshold)
 
-# Create a colored version of the image
+# Save the quadtree object to a file using pickle
+with open('quadtree.pkl', 'wb') as file:
+    pickle.dump(quadtree, file)
+
+# Pathfinding using the quadtree
+def find_path(start, goal, quadtree):
+    if not quadtree.is_obstacle:
+        if not quadtree.children:
+            return [(quadtree.x + quadtree.width // 2, quadtree.y + quadtree.height // 2)]
+        else:
+            for child in quadtree.children:
+                if is_point_inside(start, child) and is_point_inside(goal, child):
+                    return find_path(start, goal, child)
+    return []
+
+def is_point_inside(point, quadtree):
+    x, y = point
+    return quadtree.x <= x < quadtree.x + quadtree.width and quadtree.y <= y < quadtree.y + quadtree.height
+
+# Define start and goal points
+start_point = (10, 10)
+goal_point = (200, 200)
+
+# Find path using the quadtree
+path = find_path(start_point, goal_point, quadtree)
+
+# Print the path
+print("Path:")
+for point in path:
+    print(point)
+
+# Display the quadtree overlay on the image
 image_colored = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
-# Draw quadtree overlay on the colored image
 def draw_quadtree(node, image):
     if node.is_obstacle:
         cv2.rectangle(image, (node.x, node.y), (node.x + node.width, node.y + node.height), (0, 0, 255), 2)
@@ -108,33 +89,12 @@ def draw_quadtree(node, image):
 
 draw_quadtree(quadtree, image_colored)
 
-# Randomly pick a starting and ending point within the quadtree area
-start_x = random.randint(0, image.shape[1])
-start_y = random.randint(0, image.shape[0])
-start_node = quadtree
-while start_node.children:
-    for child in start_node.children:
-        if child.x <= start_x < child.x + child.width and child.y <= start_y < child.y + child.height:
-            start_node = child
-            break
-end_x = random.randint(0, image.shape[1])
-end_y = random.randint(0, image.shape[0])
-end_node = quadtree
-while end_node.children:
-    for child in end_node.children:
-        if child.x <= end_x < child.x + child.width and child.y <= end_y < child.y + child.height:
-            end_node = child
-            break
+# Draw the path on the image
+if path:
+    for i in range(len(path) - 1):
+        cv2.line(image_colored, path[i], path[i + 1], (0, 255, 0), 2)
 
-# Run A* algorithm to find the route
-route = find_route(start_node, end_node)
-
-# Overlay the route on top of the image and generated grid
-if route:
-    for i in range(len(route) - 1):
-        cv2.line(image_colored, route[i], route[i + 1], (0, 255, 0), 2)
-
-# Display the image with the quadtree overlay and route
-cv2.imshow('Image with Quadtree Overlay and Route', image_colored)
+# Display the image with the quadtree overlay and path
+cv2.imshow('Image with Quadtree Overlay and Path', image_colored)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
