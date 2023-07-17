@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-
+""" 
 def split_image(image_path, threshold, map_path):
     # Load the image
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
@@ -60,7 +60,7 @@ for polygon in polygons:
     plt.plot(polygon[:, 0], polygon[:, 1], 'r-')
 
 #plt.show()
-
+ """
 
 
 ##########################
@@ -68,13 +68,13 @@ for polygon in polygons:
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-
+""" 
 obstacles = polygons
 
 def plot_poly(points, fmt='b-', **kwargs):
     plt.plot(np.append(points[:, 0], points[0, 0]), np.append(points[:, 1], points[0, 1]), fmt)
     print("Plotting Polygons ...")
-
+ """
 # Adjust the map boundaries based on the extent of the generated polygons
 x_coords = []
 y_coords = []
@@ -88,10 +88,10 @@ y_min, y_max = min(y_coords), max(y_coords)
 bl = [x_min, y_min]
 tr = [x_max, y_max]
 
-
+""" 
 for ob in obstacles:
     plot_poly(ob, 'r-')
-#plt.show()
+#plt.show() """
 
 def lines_cross(a,b,c,d):
     #print("Checking for crossing lines ...")

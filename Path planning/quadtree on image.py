@@ -38,14 +38,13 @@ class QuadTreeNode:
         self.children = []
 
 # Load the grayscale image
-image = cv2.imread('split-image.png', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('Map+Ridge.png', cv2.IMREAD_GRAYSCALE)
 
 # Define the threshold value
 threshold = 70
 
 # Perform quadtree process
 quadtree = quadtree_process(image, threshold)
-
 
 # Create a colored version of the image
 image_colored = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
@@ -60,7 +59,5 @@ def draw_quadtree(node, image):
 
 draw_quadtree(quadtree, image_colored)
 
-# Display the image with the quadtree overlay
-cv2.imshow('Image with Quadtree Overlay', image_colored)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# Save the image with the quadtree overlay to a PNG file
+cv2.imwrite('image_with_quadtree.png', image_colored)
