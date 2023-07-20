@@ -1,9 +1,9 @@
 ### Aircraft Defined Properties
-dry_weight = 3
-wet_weight = 2
-payload_weight = 0.8
-weight = dry_weight + wet_weight + payload_weight
-wing_span = 2 #metres
+dry_weight = 1.5
+wet_weight = 0.5
+payload_weight = 0.2
+mass = dry_weight + wet_weight + payload_weight
+wing_span = 2.4 #metres
 wing_chord = 0.3 #metres
 wing_area = wing_span * wing_chord #metres squared
 cross_section_area = 0.5 #metres squared
@@ -39,7 +39,7 @@ maximum_power = wppanel * panel_x * panel_y
 ### Mathematical Constants
 atmo_density = 1.225
 drag_co = 0.02
-lift_co = 0.4 #(0.3-0.5)
+lift_co = 0.21750566893424042 #(0.3-0.5)
 
 ### Mission parameters
 safety_factor = 20  # percent

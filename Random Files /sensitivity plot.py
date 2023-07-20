@@ -6,10 +6,12 @@ import power.power_generation_maths
 from variables_file import latitude, longitude, year, pitch, yaw, roll
 
 
-total_power = []
-day_of_year = []
+
 
 def sense_plot_time_year(year, pitch, yaw, roll):
+    total_power = []
+    day_of_year = []
+
     days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     day_of_year_track = 1
     if is_leap_year(year):
