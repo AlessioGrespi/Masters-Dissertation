@@ -38,8 +38,8 @@ maximum_power = wppanel * panel_x * panel_y
 
 ### Mathematical Constants
 atmo_density = 1.225
-drag_co = 0.1
-lift_co = 0.9 #(0.3-0.5)
+drag_co = 0.02
+lift_co = 0.4 #(0.3-0.5)
 
 ### Mission parameters
 safety_factor = 20  # percent
