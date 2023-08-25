@@ -1,7 +1,8 @@
 import sun_stuff.solar_power as sp
 from variables_file import *
 import matplotlib.pyplot as plt
-import power.power_consumption_maths
+import power.power_consumption_maths as con
+import power.power_generation_maths as gen
 from matplotlib.ticker import MultipleLocator
 import matplotlib.cm as cm
 import numpy as np
@@ -29,7 +30,6 @@ def power_incidence_angle(): #Incidence Angle on Panel (x), Power output (y)
     plt.grid(True)
     plt.show()
 
-
 def min_speed_payload():
     min_speeds = []
     lifts = []
@@ -39,6 +39,7 @@ def min_speed_payload():
     ratio_weights = []
     ratio_ld = []
     wings = []
+    weight = mass * 9.81
 
     for wing_area in range(20):
         wing_area += 1
@@ -72,6 +73,8 @@ def min_speed_payload():
 
     plt.grid(True)
     plt.show()
+
+
 
 def lift_co_wingspan():
     speeds = []
@@ -111,7 +114,8 @@ def lift_co_wingspan():
     plt.show()
 
 
-def sense_plot_time_year(year, pitch, yaw, roll):
+
+def sense_plot_time_year(year, pitch, yaw, roll):  #### make dataset rather than plot
     total_power = []
     day_of_year = []
 
@@ -154,13 +158,7 @@ def is_leap_year(year):
         return True
     return False
 
-sense_plot_time_year(year, pitch, yaw, roll)
 
-#power_incidence_angle()
-
-#min_speed_payload()
-
-lift_co_wingspan()
 
 
 def solar_energy_per_unit_mass():
@@ -193,6 +191,8 @@ def solar_energy_per_unit_mass():
     ax.set_ylabel('Velocity m/s')
     plt.show()
 
+
+
 def lift_to_drag(): # idk this is wrong
     lifts = []
     drags = []
@@ -217,34 +217,7 @@ def lift_to_drag(): # idk this is wrong
     plt.title('Ratio of Lift to Drag vs. Velocity')
     plt.show()
 
-def airspeed_to_drag_dragco():
-    drag_cos = []
 
-    for drag_co in range(10):
-        drag_co += 1
-        drag_co /= 10
-
-        drags = []
-        velocities = []
-
-        for velocity in range(10):
-            velocity += 1
-            velocity *= 5
-
-            drag = 0.5 * atmo_density * pow(velocity, 2) * cross_section_area * drag_co
-
-            drags.append(drag)
-            velocities.append(velocity)
-
-        plt.plot(velocities, drags, label=f"Drag Coeff: {drag_co:.1f}")
-
-        drag_cos.append(drag_co)
-
-    plt.xlabel('Velocity')
-    plt.ylabel('Drag')
-    plt.title('Drag vs. Velocity')
-    plt.legend()
-    plt.show()
 
 def airspeed_to_drag_dragco():
     drag_cos = []
@@ -275,11 +248,7 @@ def airspeed_to_drag_dragco():
     plt.legend()
     plt.show()
 
-airspeed_to_drag_dragco()
 
-lift_to_drag()
-
-solar_energy_per_unit_mass()
 
 
 def power_0_24():
@@ -341,6 +310,8 @@ def graph(start_x, end_x):
 
     plt.show()
 
+
+
 def power_start_end(start_hour, end_hour):
     batt_WattHours_Remaining = batt_WattHours
     batt_WattSeconds_Remaining = batt_WattHours_Remaining * 3600
@@ -365,6 +336,7 @@ def power_start_end(start_hour, end_hour):
                 Wh_remaining.append(batt_WattHours_Remaining)
 
     graph(start_hour, end_hour)
+
 
 
 def power_start_depleted(start_hour):
@@ -403,3 +375,15 @@ def power_start_depleted(start_hour):
 
     graph(start_hour, hour + 1)
 
+start_hour = 2
+end_hour = 22
+""" power_incidence_angle()
+min_speed_payload()
+lift_co_wingspan()
+sense_plot_time_year(year, pitch, yaw, roll)
+solar_energy_per_unit_mass()
+lift_to_drag()
+airspeed_to_drag_dragco() """
+power_0_24()
+power_start_end(start_hour, end_hour)
+power_start_depleted(start_hour)

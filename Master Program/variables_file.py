@@ -1,3 +1,5 @@
+import numpy as np
+
 ### Aircraft Defined Properties
 dry_weight = 1.5
 wet_weight = 0.5
@@ -8,7 +10,7 @@ wing_chord = 0.3 #metres
 wing_area = wing_span * wing_chord #metres squared
 cross_section_area = 0.5 #metres squared
 glide_ratio = 45  # horizontal distance per metre of altitude
-cruise_speed = 15  # m/s
+cruise_speed = 12  # m/s
 
 ### Power Systems
 batt_mAH = 50000
@@ -85,3 +87,5 @@ power_day = []
 Wh_remaining = []
 power_out = []
 power_in = []
+
+

@@ -1,0 +1,96 @@
+import cv2
+import numpy as np
+import heapq
+
+class QuadTreeNode:
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.is_obstacle = False
+        self.children = []
+        self.parent = None
+        self.g_cost = float('inf')
+        self.h_cost = 0
+
+    def f_cost(self):
+        return self.g_cost + self.h_cost
+
+def euclidean_distance(p1, p2):
+    return np.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+
+def astar_pathfinding(quadtree, start, goal):
+    open_set = []
+    heapq.heappush(open_set, (0, start))
+
+    while open_set:
+        _, current = heapq.heappop(open_set)
+        current_node = quadtree_query(quadtree, current[1], current[0])
+
+        if current == goal:
+            path = []
+            while current_node is not None:
+                path.append((current_node.y + current_node.height // 2, current_node.x + current_node.width // 2))
+                current_node = current_node.parent
+            path.reverse()
+            return path
+
+        for child in current_node.children:
+            if not child.is_obstacle:
+                g_score = current_node.g_cost + euclidean_distance((current[0], current[1]), (child.y + child.height // 2, child.x + child.width // 2))
+                if g_score < child.g_cost:
+                    child.parent = current_node
+                    child.g_cost = g_score
+                    child.h_cost = euclidean_distance((child.y + child.height // 2, child.x + child.width // 2), (goal[0], goal[1]))
+                    heapq.heappush(open_set, (child.f_cost(), (child.y + child.height // 2, child.x + child.width // 2)))
+
+    return None
+
+def quadtree_query(node, x, y):
+    if node.is_obstacle:
+        return None
+
+    if not node.children:
+        return node
+
+    for child in node.children:
+        if child.x <= x < child.x + child.width and child.y <= y < child.y + child.height:
+            return quadtree_query(child, x, y)
+
+# Load the grayscale image
+image = cv2.imread('Map+Ridge.png', cv2.IMREAD_GRAYSCALE)
+
+# Define the threshold value
+threshold = 70
+
+# Perform quadtree process
+quadtree = quadtree_process(image, threshold)
+
+# Define start and goal points
+start = (500, 2250)
+goal = (1900, 200)
+
+# Find the path using A* pathfinding
+path = astar_pathfinding(quadtree, start, goal)
+
+# Create a colored version of the image
+image_colored = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+
+# Draw quadtree overlay on the colored image
+def draw_quadtree(node, image):
+    if node.is_obstacle:
+        cv2.rectangle(image, (node.x, node.y), (node.x + node.width, node.y + node.height), (0, 0, 255), 2)
+    else:
+        for child in node.children:
+            draw_quadtree(child, image)
+
+draw_quadtree(quadtree, image_colored)
+
+# Draw the path on the image
+if path:
+    for point in path:
+        cv2.circle(image_colored, point, 3, (0, 255, 0), -1)
+
+# Save the image with the quadtree overlay and path to a PNG file
+cv2.imwrite('image_with_quadtree_and_path.png', image_colored)
