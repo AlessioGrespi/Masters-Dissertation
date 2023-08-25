@@ -1,3 +1,9 @@
+"""
+TRIMS THE SCORE MAP TO ONLY SHOW AREAS WHICH ARE NAVIGABLE
+
+FILE IS COMPLETE AS OF 25/8/23 DO NOT MODIFY FURTHER
+"""
+
 import cv2
 import numpy as np
 import a_img_setup
