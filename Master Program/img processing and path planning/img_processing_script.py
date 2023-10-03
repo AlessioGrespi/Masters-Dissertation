@@ -5,7 +5,7 @@ import d_pathplanning as pathplan
 
 image_source = "render-5.png"
 threshold = 70
-direction = 0
+direction = 315
 
 def map_creation(image_source, threshold, direction):
     setup.setup_image(image_source, threshold, direction)
@@ -13,7 +13,7 @@ def map_creation(image_source, threshold, direction):
     lift_trimmer.trim_reward_map("ridge_map.png", "split_image_inverse.png", "trimmed_map.png")
 
 map_creation(image_source, threshold, direction)
-""" 
+
 # Example usage
 image_path = 'split_image.png'
 score_map_path = 'trimmed_map.png'
@@ -23,4 +23,4 @@ goal = (1900, 200)
 weight = 5  # distance weight
 score_weight = 10
 
-pathplan.path_plan(start, goal, weight, score_weight, image_path, score_map_path) """
+pathplan.path_plan(start, goal, weight, score_weight, image_path, score_map_path)

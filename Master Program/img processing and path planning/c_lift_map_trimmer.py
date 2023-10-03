@@ -18,7 +18,7 @@ def apply_two_tone_mask(grayscale_image, two_tone_image):
         raise ValueError("Images must be the same size")
 
     # Convert the two-tone image to a binary mask
-    _, binary_mask = cv2.threshold(two_tone, 1, 255, cv2.THRESH_BINARY)
+    _, binary_mask = cv2.threshold(two_tone, 0, 255, cv2.THRESH_BINARY)
 
     # Set the pixels in the grayscale image to zero where the mask is black
     result = cv2.bitwise_and(grayscale, cv2.bitwise_not(binary_mask))
