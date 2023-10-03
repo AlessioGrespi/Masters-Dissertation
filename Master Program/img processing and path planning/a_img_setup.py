@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-import kernels as k
+import e_kernels as k
 from PIL import Image
 
 def convert_to_grayscale(input_image_path, output_image_path):

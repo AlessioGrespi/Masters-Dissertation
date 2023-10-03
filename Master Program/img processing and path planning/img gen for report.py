@@ -5,14 +5,16 @@ import d_pathplanning as pathplan
 
 image_source = "render-5.png"
 threshold = 70
-direction = 45
+#direction = 270
 
 def map_creation(image_source, threshold, direction):
     setup.setup_image(image_source, threshold, direction)
-    filtering.apply_ridge_filters("grayscale_map.png", direction, "ridge_map.png")
+    filtering.apply_ridge_filters("grayscale_map.png", direction, "ridge_map_{}.png".format(direction))
     lift_trimmer.trim_reward_map("ridge_map.png", "split_image_inverse.png", "trimmed_map.png")
 
-map_creation(image_source, threshold, direction)
+for angle in range(24):
+    direction = angle*15
+    map_creation(image_source, threshold, direction)
 """ 
 # Example usage
 image_path = 'split_image.png'
