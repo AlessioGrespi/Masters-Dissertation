@@ -94,11 +94,17 @@ def apply_ridge_filters(path_to_img, direction, output_file):
 
     output = image
 
+    #cv2.imwrite("img_step_1.png", output)
     output = sharpen_filter(output)
+    #cv2.imwrite("img_step_2.png", output)
     output = ridge_filter(output, direction)
+    #cv2.imwrite("img_step_3.png", output)
     output = ridge_filter(output, direction)
+    #cv2.imwrite("img_step_4.png", output)
     output = sharpen_less_filter(output)
+    #cv2.imwrite("img_step_5.png", output)
     output = blur_filter(output)
+    #cv2.imwrite("img_step_6.png", output)
 
     #output = sobel_y(output)
 

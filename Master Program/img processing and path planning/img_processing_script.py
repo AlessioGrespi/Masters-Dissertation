@@ -5,7 +5,7 @@ import d_pathplanning as pathplan
 
 image_source = "render-5.png"
 threshold = 70
-direction = 45
+direction = 0
 
 def map_creation(image_source, threshold, direction):
     setup.setup_image(image_source, threshold, direction)
