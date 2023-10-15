@@ -52,3 +52,7 @@ def setup_image(image_source, threshold, direction):
     img_split(image_source, threshold, "split_image_inverse.png")
 
     invert_image("split_image_inverse.png", "split_image.png")
+
+
+
+#invert_image("trimmed_map.png", "trimmed_map_inverse.png")

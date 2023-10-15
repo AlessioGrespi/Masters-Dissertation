@@ -36,7 +36,7 @@ def astar(grid, score_map, start, goal, weight=1):
                 if tentative_g_score < g_score[neighbor]:
                     came_from[neighbor] = current
                     g_score[neighbor] = tentative_g_score
-                    score_weight = 10  # Adjust this value as needed
+                    score_weight = 0  # Adjust this value as needed
                     f_score[neighbor] = g_score[neighbor] + weight * euclidean_distance(neighbor, goal) + score_weight * score_map[neighbor][0]  # Change score_map[neighbor] to score_map[neighbor][0]
                     heapq.heappush(open_set, (f_score[neighbor], neighbor))
     
@@ -57,7 +57,7 @@ def load_score_map(score_map_path):
 # Example usage
 image_path = 'split_image.png'
 score_map_path = 'trimmed_map.png'
-start = (1250, 1500)
+start = (500, 500)
 goal = (1900, 200)
 
 weight = 2.0  # Adjust the weight factor here
@@ -71,14 +71,23 @@ if path:
 else:
     print("No path found.")
 
+
+
+
+    
+
 # Visualize the path on a plot
 plt.imshow(image, cmap='gray')
-plt.imshow(score_map, alpha=0.5, cmap='hot')  # Ensure 'cmap' is set to 'hot'
+plt.imshow(score_map, alpha=1, cmap='gist_gray')  # Ensure 'cmap' is set to 'hot'
+
+
+
+
 plt.scatter(start[1], start[0], color='green', marker='o', label='Start')
-plt.scatter(goal[1], goal[0], color='red', marker='x', label='Goal')
+plt.scatter(goal[1], goal[0], color='blue', marker='x', label='Goal')
 if path:
     path_y, path_x = zip(*path)
-    plt.plot(path_x, path_y, color='blue', label='Path')
+    plt.plot(path_x, path_y, color='red', label='Path')
 plt.legend()
-plt.title('A* Pathfinding with Score Map')
+plt.title('A* Pathfinding')
 plt.show()

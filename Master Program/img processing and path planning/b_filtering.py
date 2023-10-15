@@ -84,9 +84,12 @@ def blur_filter(image):
     output = cv2.filter2D(image, -1, k.blurred_kernel)
     return output
 
+def normalisation_filter(image):
+    output = cv2.filter2D(image, -1, k.normalisation_kernel)
+    return output
 
 
-def apply_ridge_filters(path_to_img, direction, output_file):
+def apply_ridge_filters(path_to_img, direction, output_file, map_translation):
     
     # Load the image
     image_path = path_to_img
@@ -95,18 +98,25 @@ def apply_ridge_filters(path_to_img, direction, output_file):
     output = image
 
     #cv2.imwrite("img_step_1.png", output)
-    output = sharpen_filter(output)
+    #output = sharpen_filter(output)
     #cv2.imwrite("img_step_2.png", output)
     output = ridge_filter(output, direction)
     #cv2.imwrite("img_step_3.png", output)
-    output = ridge_filter(output, direction)
+    #output = ridge_filter(output, direction)
     #cv2.imwrite("img_step_4.png", output)
-    output = sharpen_less_filter(output)
+    #output = sharpen_less_filter(output)
     #cv2.imwrite("img_step_5.png", output)
-    output = blur_filter(output)
+    #output = blur_filter(output)
     #cv2.imwrite("img_step_6.png", output)
 
+
+    output = normalisation_filter(output)
+    #output = normalisation_filter(output) 
     #output = sobel_y(output)
+    
+    # Threshold the image
+    threshold = 1
+    output[output > threshold] += map_translation
 
     # Set blue and green channels to zero
     output[:, :, 0] = 0

@@ -25,6 +25,34 @@ def apply_two_tone_mask(grayscale_image, two_tone_image):
 
     return result
 
+
+from PIL import Image
+
+def make_white_pixels_transparent(input_image_path, output_image_path):
+    # Open the input image
+    image = Image.open(input_image_path)
+
+    # Convert the image to RGBA mode to handle transparency
+    image = image.convert("RGBA")
+
+    # Get the pixel data as a list of tuples
+    pixel_data = list(image.getdata())
+
+    # Iterate through all pixels and make completely white pixels transparent
+    new_pixel_data = [(r, g, b, 0) if r == 255 and g == 255 and b == 255 else (r, g, b, a) for r, g, b, a in pixel_data]
+
+    # Update the image with the modified pixel data
+    image.putdata(new_pixel_data)
+
+    # Save the resulting image
+    image.save(output_image_path)
+
+if __name__ == "__main__":
+    input_image_path = "input.png"  # Replace with your input image path
+    output_image_path = "output.png"  # Replace with the desired output image path
+    make_white_pixels_transparent(input_image_path, output_image_path)
+
+
 def trim_reward_map(grayscale_image_path, two_tone_image_path, output):
     # Paths to your grayscale and two-tone images
     grayscale_image_path = "ridge_map.png"
@@ -35,3 +63,7 @@ def trim_reward_map(grayscale_image_path, two_tone_image_path, output):
     print("Lift map trimmed and saved")
     cv2.imwrite(output, result_image)
     a_img_setup.invert_image(output, output)
+
+    #make_white_pixels_transparent(output,output)
+
+    
