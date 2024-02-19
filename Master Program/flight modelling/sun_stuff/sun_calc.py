@@ -120,4 +120,14 @@ def plot_sun_position(latitude, longitude, year, month, day):
     plt.xlim(0, 24)  # Set x-axis limits
     plt.xticks(range(0, 25, 4))  # Set x-axis tick marks every 4 units
     plt.grid(True)
+
+    
     plt.show()
+
+
+latitude = 0
+longitude = 0
+year = 2023
+month = 6 
+day = 22
+plot_sun_position(latitude, longitude, year, month, day)
